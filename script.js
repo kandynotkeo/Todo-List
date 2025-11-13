@@ -4,18 +4,34 @@ function Task(uuid, taskInfo, isChecked) {
     this.taskInfo = taskInfo;
     this.isChecked = isChecked;
 }
+
 const todos = [];
 
 // Get info-tab element
 const infoTab = document.getElementById('info-tab');
+const timeTab = infoTab.getElementsByTagName('strong')[0];
 const activeTasks = infoTab.getElementsByClassName('tasks-text')[0];
 
-function activeTasksNumber () {
+function timeSet() {
+    const timeFormat = {weekday: 'long', month: 'long', day: 'numeric'};
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const time = new Intl.DateTimeFormat('en-US', timeFormat).format(now);
+    timeTab.innerText = `${time}`;
+
+    setTimeout(timeSet, tomorrow - now);
+}
+
+function activeTasksNumber() {
     const activeList = todos.filter(task => !(task.isChecked));
     activeTasks.innerText = `${activeList.length} Active Tasks`;
 }
 
-window.activeTasksNumber();
+timeSet();
+activeTasksNumber();
 
 // Get tasks-list element
 const tasksList = document.getElementById('tasks-list');
