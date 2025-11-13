@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="fontawesome/css/all.css"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="script" href="script.js"/>
+</head>
+<body>
+<div id="todo-page">
+    <div id="info-bar">
+        <div id="info-tab">
+            <strong>Wednesday, November 12</strong>
+            <p class="tasks-text">2 Active Tasks</p>
+        </div>
+        <div class="tab-by-status">Incomplete Tasks</div>
+        <div class="tab-by-status disable-text">Completed Tasks</div>
+    </div>
+    <form id="task-input">
+        <label for="new-task"></label>
+        <input type="text" id="new-task" name="name" placeholder="Enter a task..."/>
+        <button>Add Task</button>
+    </form>
+    <div id="tasks-list"></div>
+    <script src="script.js"></script>
+</div>
+</body>
+</html>
