@@ -6,6 +6,17 @@ function Task(uuid, taskInfo, isChecked) {
 }
 const todos = [];
 
+// Get info-tab element
+const infoTab = document.getElementById('info-tab');
+const activeTasks = infoTab.getElementsByClassName('tasks-text')[0];
+
+function activeTasksNumber () {
+    const activeList = todos.filter(task => !(task.isChecked));
+    activeTasks.innerText = `${activeList.length} Active Tasks`;
+}
+
+window.activeTasksNumber();
+
 // Get tasks-list element
 const tasksList = document.getElementById('tasks-list');
 const form = document.getElementById('task-input');
@@ -13,6 +24,7 @@ form.addEventListener('submit', addTodo);
 
 function renderTodo(e) {
     e.preventDefault();
+    activeTasksNumber();
     tasksList.innerHTML = '';
 
     // Render the todo list
