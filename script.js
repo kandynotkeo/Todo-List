@@ -1,18 +1,26 @@
-// Initialize empty todo list
+// Key for todo list
+const STORAGE_KEY = 'todosList';
+
 function Task(uuid, taskInfo, isChecked) {
     this.uuid = uuid;
     this.taskInfo = taskInfo;
     this.isChecked = isChecked;
 }
 
-const todos = [];
+function getTodos() {
+    const todos = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (todos === null) return [];
+    return todos;
+}
 
-// Get info-tab element
-const infoTab = document.getElementById('info-tab');
-const timeTab = infoTab.getElementsByTagName('strong')[0];
-const activeTasks = infoTab.getElementsByClassName('tasks-text')[0];
+function pushTodos(todos) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+}
 
+// Render info-tab element
 function timeSet() {
+    const timeTab = document.getElementById('info-tab').getElementsByTagName('strong')[0];
+
     const timeFormat = {weekday: 'long', month: 'long', day: 'numeric'};
     const now = new Date();
     const tomorrow = new Date(now);
@@ -26,24 +34,26 @@ function timeSet() {
 }
 
 function activeTasksNumber() {
-    const activeList = todos.filter(task => !(task.isChecked));
+    const activeTasks = document.getElementById('info-tab').getElementsByClassName('tasks-text')[0];
+
+    const todos = getTodos();
+    const activeList = todos.filter(task => !task.isChecked);
     activeTasks.innerText = `${activeList.length} Active Tasks`;
 }
 
-timeSet();
-activeTasksNumber();
+// Render tasks-list element
+function renderTodo() {
+    const tasksList = document.getElementById('tasks-list');
+    const form = document.getElementById('task-input');
+    form.addEventListener('submit', addTodo);
+    form.querySelector('#new-task').focus();
 
-// Get tasks-list element
-const tasksList = document.getElementById('tasks-list');
-const form = document.getElementById('task-input');
-form.addEventListener('submit', addTodo);
-
-function renderTodo(e) {
-    e.preventDefault();
-    activeTasksNumber();
     tasksList.innerHTML = '';
 
     // Render the todo list
+    const todos = getTodos();
+    activeTasksNumber();
+
     const len = todos.length;
     if (len < 1) return;
 
@@ -76,24 +86,31 @@ function renderTodo(e) {
 }
 
 // Add task
-function addTodo(e) {
+function addTodo() {
+    const todos = getTodos();
+
     // Read value from input
     const taskInput = document.getElementById('new-task');
     const info = taskInput.value;
 
     // Add task to todos
     if (info !== '') {
-        const uuid = window.crypto.randomUUID();
-        const newTask = new Task(uuid, info, false);
-        todos.push(newTask);
         taskInput.value = '';
+
+        const uuid = crypto.randomUUID();
+        const newTask = new Task(uuid, info, false);
+
+        todos.push(newTask);
+        pushTodos(todos);
     }
 
-    renderTodo(e);
+    renderTodo();
 }
 
 // Check task
 function checkTodo(e) {
+    const todos = getTodos();
+
     // Get task with uuid
     const uuid = e.target.parentElement.dataset.uuid;
     const taskToCheck = todos.find(task => task.uuid === uuid);
@@ -101,16 +118,24 @@ function checkTodo(e) {
     // Toggle isChecked attribute
     taskToCheck.isChecked = !taskToCheck.isChecked;
 
-    renderTodo(e);
+    pushTodos(todos);
+
+    renderTodo();
 }
 
 // Delete task
 function deleteTodo(e) {
+    const todos = getTodos();
+
     // Get task with uuid
     const uuid = e.target.parentElement.dataset.uuid;
 
     // Remove task from todos
-    todos.splice(todos.findIndex(task => task.uuid === uuid), 1);
+    pushTodos(todos.filter(task => task.uuid !== uuid));
 
-    renderTodo(e);
+    renderTodo();
 }
+
+// Initial render
+timeSet();
+renderTodo();
