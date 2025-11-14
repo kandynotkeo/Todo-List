@@ -1,13 +1,21 @@
 // Initialize empty todo list
+function Task(uuid, taskInfo, isChecked) {
+    this.uuid = uuid;
+    this.taskInfo = taskInfo;
+    this.isChecked = isChecked;
+}
 const todos = [];
 
+// Get tasks-list element
 const tasksList = document.getElementById('tasks-list');
 const form = document.getElementById('task-input');
 form.addEventListener('submit', addTodo);
 
 function renderTodo(e) {
     e.preventDefault();
-    // 3. Manipulate DOM to render the todolist
+    tasksList.innerHTML = '';
+
+    // Render the todo list
     const len = todos.length;
     if (len < 1) return;
 
@@ -21,46 +29,60 @@ function renderTodo(e) {
 
         const taskText = document.createElement('p');
         taskText.classList.add('task-text-info');
-        taskText.innerText = todos[i];
+        if (todos[i].isChecked) taskText.classList.add('strike-text');
+        else taskText.classList.remove('strike-text');
+        taskText.innerText = todos[i].taskInfo;
 
         const trashIcon = document.createElement('i');
         trashIcon.classList.add('fa-solid', 'fa-trash');
         trashIcon.addEventListener('click', deleteTodo);
 
+        // Build DOM, assign uuid and isChecked data attributes
         taskDiv.appendChild(checkIcon);
         taskDiv.appendChild(taskText);
         taskDiv.appendChild(trashIcon);
+        taskDiv.dataset.uuid = todos[i].uuid;
+        taskDiv.dataset.isChecked = todos[i].isChecked;
         tasksList.appendChild(taskDiv);
     }
 }
 
-// Assign this function to button add
+// Add task
 function addTodo(e) {
-    // 1. Read value from input
+    // Read value from input
     const taskInput = document.getElementById('new-task');
-    const newTodo = taskInput.value;
-    // 2. Add value to todos array
-    if (newTodo !== '') {
-        todos.push(newTodo);
+    const info = taskInput.value;
+
+    // Add task to todos
+    if (info !== '') {
+        const uuid = window.crypto.randomUUID();
+        const newTask = new Task(uuid, info, false);
+        todos.push(newTask);
         taskInput.value = '';
     }
 
-    tasksList.innerHTML = '';
     renderTodo(e);
 }
 
+// Check task
 function checkTodo(e) {
-    const taskDiv = e.target.parentElement;
-    const taskToCheck = taskDiv.querySelector('.task-text-info');
-    taskToCheck.classList.toggle('strike-text');
+    // Get task with uuid
+    const uuid = e.target.parentElement.dataset.uuid;
+    const taskToCheck = todos.find(task => task.uuid === uuid);
+
+    // Toggle isChecked attribute
+    taskToCheck.isChecked = !taskToCheck.isChecked;
+
+    renderTodo(e);
 }
 
-// Assign this function to trash icon
+// Delete task
 function deleteTodo(e) {
-    const taskDiv = e.target.parentElement;
-    const taskToRemove = taskDiv.querySelector('.task-text-info').innerText;
-    todos.splice(todos.indexOf(taskToRemove), 1);
+    // Get task with uuid
+    const uuid = e.target.parentElement.dataset.uuid;
 
-    tasksList.innerHTML = '';
+    // Remove task from todos
+    todos.splice(todos.findIndex(task => task.uuid === uuid), 1);
+
     renderTodo(e);
 }
