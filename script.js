@@ -15,7 +15,7 @@ function activeTasksNumber () {
     activeTasks.innerText = `${activeList.length} Active Tasks`;
 }
 
-window.activeTasksNumber();
+activeTasksNumber();
 
 // Get tasks-list element
 const tasksList = document.getElementById('tasks-list');
