@@ -1,29 +1,24 @@
 #root {
-    display: flex;
-    box-sizing: border-box;
-
-    margin: 0;
     width: 80%;
     height: 80%;
-    padding: 3rem;
     border-radius: 16px;
     background-color: #3e454c;
 
-    font-size: 22px;
-    flex-direction: column;
+    box-sizing: border-box;
+    padding: 3rem;
+}
+
+.tab {
+    display: flex;
+    width: 100%;
+    min-height: 3rem;
+    justify-content: space-between;
 }
 
 .info-bar {
     display: flex;
-    height: 64px;
-    justify-content: space-between;
-}
-
-.info-tab {
-    display: flex;
-    flex-grow: 1;
-    padding: 0.5rem;
     flex-direction: column;
+    flex-grow: 1;
 }
 
 .tasks-stat {
@@ -32,10 +27,11 @@
     font-size: 16px;
 }
 
-.status-tab {
+.status-bar {
     display: flex;
-    width: 256px;
-    padding: 1rem;
+    width: 12rem;
+    box-sizing: border-box;
+    padding: 0.5rem;
     align-items: center;
 }
 
@@ -45,43 +41,44 @@
 
 .task-input {
     display: flex;
-    margin: 1rem 0 1rem 0;
     width: 100%;
-    height: 3rem;
-    padding: 0.5rem;
+    min-height: 3rem;
+    margin: 1rem 0 1rem 0;
+
+    box-sizing: border-box;
+    padding: 0 0.5rem 0 0.5rem;
     gap: 0.5rem;
     align-items: center;
 }
 
 #task-info-input {
     width: 25em;
-    height: 1.5em;
-    font-size: 1.2rem;
+    height: 3rem;
     border-radius: 5px;
     border: none;
-    padding: 0.5em;
+    box-sizing: border-box;
+
+    padding-left: 1rem;
+    font-size: inherit;
 }
 
-button {
-    width: 8em;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    border: none;
-    padding: 0.5em;
-    background-color: #61dbfb;
-}
-
-.task-info {
+.task-in-list {
     display: flex;
-    height: 2.5rem;
+    min-height: 2rem;
+
     border-top-style: solid;
     border-width: thin;
     border-color: #7b7f86;
-    padding: 0.5rem;
+
+    padding: 0 0.5rem 0 0.5rem;
     align-items: center;
 }
 
-.task-name {
+.task-in-list:last-child {
+    border-bottom-style: solid;
+}
+
+.task-info {
     display: flex;
     margin-left: 1rem;
     flex-grow: 1;
