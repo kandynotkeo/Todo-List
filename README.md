@@ -2,7 +2,7 @@
 
 ## description
 A mock todo list website (front-end UI).\
-Stack: pure HTML, CSS, JS
+Stack: ReactTS
 
 ## features
 ```
@@ -14,4 +14,5 @@ persistent data stored in localStorage
 ```
 ## status
 pureTodo: pure HTML, CSS, JS: done\
-todoReact: rebase codebase to ReactJS: testing
+todoReact: rebase codebase to ReactJS: done\
+TodoS: rebase codebase to ReactTS: working
